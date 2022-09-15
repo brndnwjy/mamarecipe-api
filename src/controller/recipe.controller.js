@@ -27,13 +27,13 @@ const recipeController = {
       });
   },
   insertRecipe: (req, res) => {
-    const { title, ingredient, step } = req.body;
+    const { title, ingredient } = req.body;
     const date = new Date().toLocaleDateString();
     const time = new Date().toLocaleTimeString();
     const timestamp = `${date} - ${time}`;
     recipeModel
-      .insertRecipe(title, ingredient, step, timestamp)
-      .then((result) => {
+      .insertRecipe(title, ingredient, timestamp)
+      .then(() => {
         res.json("Recipe Upload Success");
       })
       .catch((err) => {
@@ -42,13 +42,13 @@ const recipeController = {
   },
   updateRecipe: (req, res) => {
     const id = req.params.id;
-    const { title, ingredient, step } = req.body;
+    const { title, ingredient } = req.body;
     const date = new Date().toLocaleDateString();
     const time = new Date().toLocaleTimeString();
     const timestamp = `${date} - ${time}`;
     recipeModel
-      .updateRecipe(id, title, ingredient, step, timestamp)
-      .then((result) => {
+      .updateRecipe(id, title, ingredient, timestamp)
+      .then(() => {
         res.json("Recipe Updated");
       })
       .catch((err) => {
@@ -59,7 +59,7 @@ const recipeController = {
     const id = req.params.id;
     recipeModel
       .deleteRecipe(id)
-      .then((result) => {
+      .then(() => {
         res.json("Recipe Deleted");
       })
       .catch((err) => {

@@ -29,7 +29,7 @@ const userController = {
     const timestamp = `${date} - ${time}`;
     userModel
       .signUp(name, email, phone, password, timestamp)
-      .then((result) => {
+      .then(() => {
         res.json("Sign Up Success");
       })
       .catch((err) => {
@@ -56,7 +56,7 @@ const userController = {
     const timestamp = `${date} - ${time}`;
     userModel
       .updateAccount(id, name, email, phone, password, timestamp)
-      .then((result) => {
+      .then(() => {
         res.json("Account Updated");
       })
       .catch((err) => {
@@ -67,7 +67,7 @@ const userController = {
     const id = req.params.id;
     userModel
       .deleteAccount(id)
-      .then((result) => {
+      .then(() => {
         res.json("Account Deleted");
       })
       .catch((err) => {

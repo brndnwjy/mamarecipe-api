@@ -24,12 +24,12 @@ const recipeModel = {
       });
     });
   },
-  insertRecipe: (title, ingredient, step, timestamp) => {
+  insertRecipe: (title, ingredient, timestamp) => {
     return new Promise((resolve, reject) => {
       pool.query(
-        `INSERT INTO recipes (title, ingredient, step, created_at)
-            VALUES ($1, $2, $3, $4)`,
-        [title, ingredient, step, timestamp],
+        `INSERT INTO recipes (title, ingredient, created_at)
+            VALUES ($1, $2, $3)`,
+        [title, ingredient, timestamp],
         (err, res) => {
           if (err) {
             reject(err);
@@ -39,18 +39,17 @@ const recipeModel = {
       );
     });
   },
-  updateRecipe: (id, title, ingredient, step, timestamp) => {
+  updateRecipe: (id, title, ingredient, timestamp) => {
     return new Promise((resolve, reject) => {
       pool.query(
         `
             UPDATE recipes SET
             title = COALESCE($1, title),
             ingredient = COALESCE($2, ingredient),
-            step = COALESCE($3, step),
-            updated_at = COALESCE($4, updated_at)
-            WHERE id = $5
+            updated_at = COALESCE($3, updated_at)
+            WHERE id = $4
             `,
-        [title, ingredient, step, timestamp, id],
+        [title, ingredient, timestamp, id],
         (err, res) => {
           if (err) {
             reject(err);
