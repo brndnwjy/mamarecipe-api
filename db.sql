@@ -7,7 +7,8 @@ CREATE TABLE users (
     phone VARCHAR(16) NOT NULL,
     password VARCHAR(256) NOT NULL,
     photo VARCHAR(256),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP
 );
 
 CREATE TABLE recipes (
@@ -17,8 +18,8 @@ CREATE TABLE recipes (
     step VARCHAR NOT NULL,
     photo VARCHAR(256),
     video VARCHAR(256),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP
 );
 
 INSERT INTO users (name, email, phone, password)

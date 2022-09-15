@@ -2,8 +2,12 @@ const recipeModel = require("../model/recipe.model");
 
 const recipeController = {
   getAll: (req, res) => {
+    const search = req.query.search || "";
+    const sortBy = req.query.sortby || "id";
+    const sortOrder = req.query.order || "asc";
+
     recipeModel
-      .getAll()
+      .getAll({ search, sortBy, sortOrder })
       .then((result) => {
         res.json(result.rows);
       })
@@ -24,8 +28,11 @@ const recipeController = {
   },
   insertRecipe: (req, res) => {
     const { title, ingredient, step } = req.body;
+    const date = new Date().toLocaleDateString();
+    const time = new Date().toLocaleTimeString();
+    const timestamp = `${date} - ${time}`;
     recipeModel
-      .signUp(title, ingredient, step)
+      .insertRecipe(title, ingredient, step, timestamp)
       .then((result) => {
         res.json("Recipe Upload Success");
       })
@@ -36,9 +43,11 @@ const recipeController = {
   updateRecipe: (req, res) => {
     const id = req.params.id;
     const { title, ingredient, step } = req.body;
-    const lastUpdate = new Date()
+    const date = new Date().toLocaleDateString();
+    const time = new Date().toLocaleTimeString();
+    const timestamp = `${date} - ${time}`;
     recipeModel
-      .updateAccount(id, title, ingredient, step, lastUpdate)
+      .updateRecipe(id, title, ingredient, step, timestamp)
       .then((result) => {
         res.json("Recipe Updated");
       })
@@ -49,7 +58,7 @@ const recipeController = {
   deleteRecipe: (req, res) => {
     const id = req.params.id;
     recipeModel
-      .deleteAccount(id)
+      .deleteRecipe(id)
       .then((result) => {
         res.json("Recipe Deleted");
       })

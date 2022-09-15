@@ -14,6 +14,6 @@ router
   .get("/:id", getDetail)
   .post("/", insertRecipe)
   .put("/:id", updateRecipe)
-  .delete("/:id", deleteRecipe);
+  .delete("/:id", deleteRecipe)
 
 module.exports = router;

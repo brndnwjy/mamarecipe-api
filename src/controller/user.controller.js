@@ -24,8 +24,11 @@ const userController = {
   },
   signUp: (req, res) => {
     const { name, email, phone, password } = req.body;
+    const date = new Date().toLocaleDateString();
+    const time = new Date().toLocaleTimeString();
+    const timestamp = `${date} - ${time}`;
     userModel
-      .signUp(name, email, phone, password)
+      .signUp(name, email, phone, password, timestamp)
       .then((result) => {
         res.json("Sign Up Success");
       })
@@ -48,8 +51,11 @@ const userController = {
   updateAccount: (req, res) => {
     const id = req.params.id;
     const { name, email, phone, password } = req.body;
+    const date = new Date().toLocaleDateString();
+    const time = new Date().toLocaleTimeString();
+    const timestamp = `${date} - ${time}`;
     userModel
-      .updateAccount(id, name, email, phone, password)
+      .updateAccount(id, name, email, phone, password, timestamp)
       .then((result) => {
         res.json("Account Updated");
       })

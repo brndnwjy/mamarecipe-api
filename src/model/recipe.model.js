@@ -1,14 +1,17 @@
 const pool = require("../config/db");
 
 const recipeModel = {
-  getAll: () => {
+  getAll: ({ search, sortBy, sortOrder }) => {
     return new Promise((resolve, reject) => {
-      pool.query("SELECT * FROM recipes", (err, res) => {
-        if (err) {
-          reject(err);
+      pool.query(
+        `SELECT * FROM recipes WHERE title ILIKE '%${search}%' ORDER BY ${sortBy} ${sortOrder}`,
+        (err, res) => {
+          if (err) {
+            reject(err);
+          }
+          resolve(res);
         }
-        resolve(res);
-      });
+      );
     });
   },
   getDetail: (id) => {
@@ -21,11 +24,12 @@ const recipeModel = {
       });
     });
   },
-  insertRecipe: (title, ingredient, step) => {
+  insertRecipe: (title, ingredient, step, timestamp) => {
     return new Promise((resolve, reject) => {
       pool.query(
-        `INSERT INTO recipes (title, ingredient, step, last_update)
-            VALUES ('${title}', '${ingredient}', '${step}')`,
+        `INSERT INTO recipes (title, ingredient, step, created_at)
+            VALUES ($1, $2, $3, $4)`,
+        [title, ingredient, step, timestamp],
         (err, res) => {
           if (err) {
             reject(err);
@@ -35,17 +39,18 @@ const recipeModel = {
       );
     });
   },
-  updateRecipe: (id, title, ingredient, step, lastUpdate) => {
+  updateRecipe: (id, title, ingredient, step, timestamp) => {
     return new Promise((resolve, reject) => {
       pool.query(
         `
             UPDATE recipes SET
-            title = COALESCE('${title}', title),
-            ingredient = COALESCE('${ingredient}', ingredient),
-            step = COALESCE('${step}', step),
-            last_update = COALESCE('${lastUpdate}', last_update)
-            WHERE id = ${id}
+            title = COALESCE($1, title),
+            ingredient = COALESCE($2, ingredient),
+            step = COALESCE($3, step),
+            updated_at = COALESCE($4, updated_at)
+            WHERE id = $5
             `,
+        [title, ingredient, step, timestamp, id],
         (err, res) => {
           if (err) {
             reject(err);
@@ -57,13 +62,13 @@ const recipeModel = {
   },
   deleteRecipe: (id) => {
     return new Promise((resolve, reject) => {
-        pool.query(`DELETE FROM recipes WHERE id = ${id};`, (err, res) => {
-          if (err) {
-            reject(err);
-          }
-          resolve(res);
-        });
+      pool.query(`DELETE FROM recipes WHERE id = ${id};`, (err, res) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(res);
       });
+    });
   },
 };
 
