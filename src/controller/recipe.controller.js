@@ -6,8 +6,12 @@ const recipeController = {
     const sortBy = req.query.sortby || "id";
     const sortOrder = req.query.order || "asc";
 
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 25;
+    const offset = (page - 1) * limit;
+
     recipeModel
-      .getAll({ search, sortBy, sortOrder })
+      .getAll( search, sortBy, sortOrder, limit, offset )
       .then((result) => {
         res.json(result.rows);
       })
