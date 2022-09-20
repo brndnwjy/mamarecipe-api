@@ -39,17 +39,14 @@ const userModel = {
     });
   },
 
-  check: (email, password) => {
+  emailCheck: (email) => {
     return new Promise((resolve, reject) => {
-      pool.query(
-        `SELECT * FROM users WHERE email = '${email}' AND password = '${password}'`,
-        (err, res) => {
-          if (err) {
-            reject(err);
-          }
-          resolve(res);
+      pool.query(`SELECT * FROM users WHERE email = '${email}'`, (err, res) => {
+        if (err) {
+          reject(err);
         }
-      );
+        resolve(res);
+      });
     });
   },
 

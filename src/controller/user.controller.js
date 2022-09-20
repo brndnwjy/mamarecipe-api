@@ -1,6 +1,6 @@
 const userModel = require("../model/user.model");
-const {v4 : uuidv4} = require("uuid");
-const {hash} = require("bcryptjs");
+const { v4: uuidv4 } = require("uuid");
+const { hash, compare } = require("bcryptjs");
 const createError = require("http-errors");
 
 const userController = {
@@ -27,12 +27,12 @@ const userController = {
       });
   },
 
-  signUp: async (req, res, next) => {
+  signUp: (req, res, next) => {
     const { name, email, phone, password } = req.body;
     const date = new Date();
 
     const id = uuidv4();
-    const hashedPassword = await hash(password, 10)
+    const hashedPassword = hash(password, 10);
 
     userModel
       .signUp(id, name, email, phone, hashedPassword, date)
@@ -44,13 +44,28 @@ const userController = {
       });
   },
 
-  signIn: (req, res, next) => {
+  signIn: async (req, res, next) => {
     const { email, password } = req.body;
+
     userModel
-      .check(email, password)
+      .emailCheck(email)
       .then((result) => {
-        const { name } = result.rows[0];
-        res.json(`Welcome, ${name}`);
+        const { rowCount: check } = result;
+        if (!check) {
+          return next(createError(403, "E-mail or password incorrect!"));
+        }
+
+        const {
+          rows: [user],
+        } = result;
+        const savedPassword = user.password;
+
+        const valid = compare(password, savedPassword);
+        if (!valid) {
+          return next(createError(403, "E-mail or password incorrect!"));
+        }
+
+        res.json(`Welcome ${user.name}`);
       })
       .catch(() => {
         next(new createError.InternalServerError());
