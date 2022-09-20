@@ -11,6 +11,7 @@ const userModel = {
       });
     });
   },
+
   getDetail: (id) => {
     return new Promise((resolve, reject) => {
       pool.query(`SELECT * FROM users WHERE id = ${id}`, (err, res) => {
@@ -21,6 +22,7 @@ const userModel = {
       });
     });
   },
+
   signUp: (name, email, phone, password, timestamp) => {
     return new Promise((resolve, reject) => {
       pool.query(
@@ -36,6 +38,7 @@ const userModel = {
       );
     });
   },
+
   check: (email, password) => {
     return new Promise((resolve, reject) => {
       pool.query(
@@ -49,6 +52,7 @@ const userModel = {
       );
     });
   },
+
   updateAccount: (id, name, email, phone, password, timestamp) => {
     return new Promise((resolve, reject) => {
       pool.query(
@@ -71,6 +75,7 @@ const userModel = {
       );
     });
   },
+  
   deleteAccount: (id) => {
     return new Promise((resolve, reject) => {
       pool.query(`DELETE FROM users WHERE id = ${id};`, (err, res) => {

@@ -4,7 +4,8 @@ const recipeModel = {
   getAll: ( search, sortBy, sortOrder, limit, offset) => {
     return new Promise((resolve, reject) => {
       pool.query(
-        `SELECT * FROM recipes WHERE title ILIKE '%${search}%' ORDER BY ${sortBy} ${sortOrder} LIMIT ${limit} OFFSET ${offset}`,
+        `SELECT * FROM recipes WHERE title ILIKE '%${search}%' ORDER BY ${sortBy} ${sortOrder} 
+        LIMIT ${limit} OFFSET ${offset}`,
         (err, res) => {
           if (err) {
             reject(err);

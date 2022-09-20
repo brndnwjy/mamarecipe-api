@@ -1,28 +1,31 @@
 const userModel = require("../model/user.model");
+const createError = require("http-errors");
 
 const userController = {
-  getAll: (req, res) => {
+  getAll: (req, res, next) => {
     userModel
       .getAll()
       .then((result) => {
         res.json(result.rows);
       })
-      .catch((err) => {
-        res.json(err);
+      .catch(() => {
+        next(new createError.InternalServerError());
       });
   },
-  getDetail: (req, res) => {
+
+  getDetail: (req, res, next) => {
     const id = req.params.id;
     userModel
       .getDetail(id)
       .then((result) => {
         res.json(result.rows);
       })
-      .catch((err) => {
-        res.json(err);
+      .catch(() => {
+        next(new createError.InternalServerError());
       });
   },
-  signUp: (req, res) => {
+
+  signUp: (req, res, next) => {
     const { name, email, phone, password } = req.body;
     const date = new Date().toLocaleDateString();
     const time = new Date().toLocaleTimeString();
@@ -32,11 +35,12 @@ const userController = {
       .then(() => {
         res.json("Sign Up Success");
       })
-      .catch((err) => {
-        res.json(err);
+      .catch(() => {
+        next(new createError.InternalServerError());
       });
   },
-  signIn: (req, res) => {
+
+  signIn: (req, res, next) => {
     const { email, password } = req.body;
     userModel
       .check(email, password)
@@ -44,11 +48,12 @@ const userController = {
         const { name } = result.rows[0];
         res.json(`Welcome, ${name}`);
       })
-      .catch((err) => {
-        res.json(err);
+      .catch(() => {
+        next(new createError.InternalServerError());
       });
   },
-  updateAccount: (req, res) => {
+
+  updateAccount: (req, res, next) => {
     const id = req.params.id;
     const { name, email, phone, password } = req.body;
     const date = new Date().toLocaleDateString();
@@ -59,19 +64,20 @@ const userController = {
       .then(() => {
         res.json("Account Updated");
       })
-      .catch((err) => {
-        res.json(err);
+      .catch(() => {
+        next(new createError.InternalServerError());
       });
   },
-  deleteAccount: (req, res) => {
+
+  deleteAccount: (req, res, next) => {
     const id = req.params.id;
     userModel
       .deleteAccount(id)
       .then(() => {
         res.json("Account Deleted");
       })
-      .catch((err) => {
-        res.json(err);
+      .catch(() => {
+        next(new createError.InternalServerError());
       });
   },
 };
