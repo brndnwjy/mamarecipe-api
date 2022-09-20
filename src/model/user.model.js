@@ -23,12 +23,12 @@ const userModel = {
     });
   },
 
-  signUp: (name, email, phone, password, timestamp) => {
+  signUp: (id, name, email, phone, password, date) => {
     return new Promise((resolve, reject) => {
       pool.query(
-        `INSERT INTO users (name, email, phone, password, created_at)
-          VALUES ($1, $2, $3, $4, $5)`,
-        [name, email, phone, password, timestamp],
+        `INSERT INTO users (id, name, email, phone, password, created_at)
+          VALUES ($1, $2, $3, $4, $5, $6)`,
+        [id, name, email, phone, password, date],
         (err, res) => {
           if (err) {
             reject(err);
@@ -75,7 +75,7 @@ const userModel = {
       );
     });
   },
-  
+
   deleteAccount: (id) => {
     return new Promise((resolve, reject) => {
       pool.query(`DELETE FROM users WHERE id = ${id};`, (err, res) => {

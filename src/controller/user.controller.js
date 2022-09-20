@@ -1,4 +1,6 @@
 const userModel = require("../model/user.model");
+const {v4 : uuidv4} = require("uuid");
+const {hash} = require("bcryptjs");
 const createError = require("http-errors");
 
 const userController = {
@@ -25,13 +27,15 @@ const userController = {
       });
   },
 
-  signUp: (req, res, next) => {
+  signUp: async (req, res, next) => {
     const { name, email, phone, password } = req.body;
-    const date = new Date().toLocaleDateString();
-    const time = new Date().toLocaleTimeString();
-    const timestamp = `${date} - ${time}`;
+    const date = new Date();
+
+    const id = uuidv4();
+    const hashedPassword = await hash(password, 10)
+
     userModel
-      .signUp(name, email, phone, password, timestamp)
+      .signUp(id, name, email, phone, hashedPassword, date)
       .then(() => {
         res.json("Sign Up Success");
       })

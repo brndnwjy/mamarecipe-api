@@ -1,11 +1,11 @@
 CREATE DATABASE mamarecipe;
 
 CREATE TABLE users (
-    id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY, 
+    id UUID PRIMARY KEY, 
     name VARCHAR(32) NOT NULL,
-    email VARCHAR(128) NOT NULL,
+    email VARCHAR(128) NOT NULL UNIQUE,
     phone VARCHAR(16) NOT NULL,
-    password VARCHAR(256) NOT NULL,
+    password VARCHAR(64) NOT NULL,
     photo VARCHAR(256),
     created_at TIMESTAMP,
     updated_at TIMESTAMP
