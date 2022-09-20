@@ -2,6 +2,7 @@ const userModel = require("../model/user.model");
 const { v4: uuidv4 } = require("uuid");
 const { hash, compare } = require("bcryptjs");
 const createError = require("http-errors");
+const generateToken = require("../helper/auth.helper");
 
 const userController = {
   getAll: (req, res, next) => {
@@ -65,7 +66,14 @@ const userController = {
           return next(createError(403, "E-mail or password incorrect!"));
         }
 
-        res.json(`Welcome ${user.name}`);
+        const token = generateToken({
+          name: user.name
+        })
+
+        res.json({
+          message: "login success",
+          token
+        })
       })
       .catch(() => {
         next(new createError.InternalServerError());

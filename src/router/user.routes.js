@@ -9,9 +9,10 @@ const {
   updateAccount,
   deleteAccount,
 } = require("../controller/user.controller");
+const jwtAuth = require("../middleware/auth.middleware");
 
 router
-  .get("/", getAll)
+  .get("/", jwtAuth, getAll)
   .get("/:id", getDetail)
   .post("/signup", signUp)
   .post("/signin", signIn)
