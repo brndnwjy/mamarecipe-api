@@ -1,7 +1,7 @@
 const pool = require("../config/db");
 
 const recipeModel = {
-  getAll: ( search, sortBy, sortOrder, limit, offset) => {
+  getAll: (search, sortBy, sortOrder, limit, offset) => {
     return new Promise((resolve, reject) => {
       pool.query(
         `SELECT * FROM recipes WHERE title ILIKE '%${search}%' ORDER BY ${sortBy} ${sortOrder} 
@@ -15,22 +15,11 @@ const recipeModel = {
       );
     });
   },
+
   getDetail: (id) => {
     return new Promise((resolve, reject) => {
-      pool.query(`SELECT * FROM recipes WHERE id = ${id}`, (err, res) => {
-        if (err) {
-          reject(err);
-        }
-        resolve(res);
-      });
-    });
-  },
-  insertRecipe: (title, ingredient, timestamp) => {
-    return new Promise((resolve, reject) => {
       pool.query(
-        `INSERT INTO recipes (title, ingredient, created_at)
-            VALUES ($1, $2, $3)`,
-        [title, ingredient, timestamp],
+        `SELECT users.name as recipe_owner, recipes.* FROM recipes JOIN users USING (user_id) WHERE recipe_id = '${id}'`,
         (err, res) => {
           if (err) {
             reject(err);
@@ -40,6 +29,23 @@ const recipeModel = {
       );
     });
   },
+
+  insertRecipe: (id, user_id, title, ingredient, date) => {
+    return new Promise((resolve, reject) => {
+      pool.query(
+        `INSERT INTO recipes (recipe_id, user_id, title, ingredient, created_at)
+            VALUES ($1, $2, $3, $4, $5)`,
+        [id, user_id, title, ingredient, date],
+        (err, res) => {
+          if (err) {
+            reject(err);
+          }
+          resolve(res);
+        }
+      );
+    });
+  },
+
   updateRecipe: (id, title, ingredient, timestamp) => {
     return new Promise((resolve, reject) => {
       pool.query(
@@ -48,7 +54,7 @@ const recipeModel = {
             title = COALESCE($1, title),
             ingredient = COALESCE($2, ingredient),
             updated_at = COALESCE($3, updated_at)
-            WHERE id = $4
+            WHERE recipe_id = $4
             `,
         [title, ingredient, timestamp, id],
         (err, res) => {
@@ -60,9 +66,10 @@ const recipeModel = {
       );
     });
   },
+
   deleteRecipe: (id) => {
     return new Promise((resolve, reject) => {
-      pool.query(`DELETE FROM recipes WHERE id = ${id};`, (err, res) => {
+      pool.query(`DELETE FROM recipes WHERE recipe_id = '${id}'`, (err, res) => {
         if (err) {
           reject(err);
         }

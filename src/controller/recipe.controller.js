@@ -1,10 +1,11 @@
 const recipeModel = require("../model/recipe.model");
+const { v4: uuidv4 } = require("uuid");
 const createError = require("http-errors");
 
 const recipeController = {
   getAll: (req, res, next) => {
     const search = req.query.search || "";
-    const sortBy = req.query.sortby || "id";
+    const sortBy = req.query.sortby || "recipe_id";
     const sortOrder = req.query.order || "asc";
 
     const page = parseInt(req.query.page) || 1;
@@ -35,11 +36,12 @@ const recipeController = {
 
   insertRecipe: (req, res, next) => {
     const { title, ingredient } = req.body;
-    const date = new Date().toLocaleDateString();
-    const time = new Date().toLocaleTimeString();
-    const timestamp = `${date} - ${time}`;
+    const {id : user_id} = req.decoded
+    const id = uuidv4();
+    const date = new Date();
+
     recipeModel
-      .insertRecipe(title, ingredient, timestamp)
+      .insertRecipe(id, user_id, title, ingredient, date)
       .then(() => {
         res.json("Recipe Upload Success");
       })
@@ -54,6 +56,7 @@ const recipeController = {
     const date = new Date().toLocaleDateString();
     const time = new Date().toLocaleTimeString();
     const timestamp = `${date} - ${time}`;
+
     recipeModel
       .updateRecipe(id, title, ingredient, timestamp)
       .then(() => {

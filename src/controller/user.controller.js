@@ -66,6 +66,7 @@ const userController = {
         }
 
         const token = generateToken({
+          id: user.user_id,
           name: user.name,
           role: user.role
         })

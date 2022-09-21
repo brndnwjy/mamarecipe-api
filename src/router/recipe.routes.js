@@ -8,11 +8,12 @@ const {
   updateRecipe,
   deleteRecipe
 } = require("../controller/recipe.controller");
+const { jwtAuth } = require("../middleware/auth.middleware");
 
 router
   .get("/", getAll)
   .get("/:id", getDetail)
-  .post("/", insertRecipe)
+  .post("/", jwtAuth, insertRecipe)
   .put("/:id", updateRecipe)
   .delete("/:id", deleteRecipe)
 

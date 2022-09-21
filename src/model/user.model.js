@@ -14,7 +14,7 @@ const userModel = {
 
   getDetail: (id) => {
     return new Promise((resolve, reject) => {
-      pool.query(`SELECT * FROM users WHERE user_id = ${id}`, (err, res) => {
+      pool.query(`SELECT * FROM users WHERE user_id = '${id}'`, (err, res) => {
         if (err) {
           reject(err);
         }
@@ -75,7 +75,7 @@ const userModel = {
 
   deleteAccount: (id) => {
     return new Promise((resolve, reject) => {
-      pool.query(`DELETE FROM users WHERE user_id = ${id};`, (err, res) => {
+      pool.query(`DELETE FROM users WHERE user_id = '${id}'`, (err, res) => {
         if (err) {
           reject(err);
         }
