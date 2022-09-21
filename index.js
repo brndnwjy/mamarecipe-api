@@ -6,6 +6,7 @@ const helmet = require("helmet");
 const xss = require("xss-clean");
 const morgan = require("morgan");
 const createError = require("http-errors");
+const path = require("path");
 
 const main = require("./src/router/index.routes");
 
@@ -28,6 +29,8 @@ app.use(
 );
 
 app.use("/v1", main);
+
+app.use("/img", express.static(path.join(__dirname, "/upload")));
 
 app.all("*", (req, res, next) => {
   next(new createError.NotFound());

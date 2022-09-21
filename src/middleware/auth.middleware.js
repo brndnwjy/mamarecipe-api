@@ -8,7 +8,6 @@ const jwtAuth = (req, res, next) => {
       const decoded = jwt.verify(token, process.env.SECRET_KEY_JWT);
 
       req.decoded = decoded;
-      console.log(decoded)
       next();
     } else {
       res.json({

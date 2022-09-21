@@ -30,12 +30,12 @@ const recipeModel = {
     });
   },
 
-  insertRecipe: (id, user_id, title, ingredient, date) => {
+  insertRecipe: (id, user_id, title, ingredient, photo, date) => {
     return new Promise((resolve, reject) => {
       pool.query(
-        `INSERT INTO recipes (recipe_id, user_id, title, ingredient, created_at)
-            VALUES ($1, $2, $3, $4, $5)`,
-        [id, user_id, title, ingredient, date],
+        `INSERT INTO recipes (recipe_id, user_id, title, ingredient, photo, created_at)
+            VALUES ($1, $2, $3, $4, $5, $6)`,
+        [id, user_id, title, ingredient, photo, date],
         (err, res) => {
           if (err) {
             reject(err);

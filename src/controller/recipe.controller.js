@@ -36,12 +36,17 @@ const recipeController = {
 
   insertRecipe: (req, res, next) => {
     const { title, ingredient } = req.body;
-    const {id : user_id} = req.decoded
+    const { id: user_id } = req.decoded;
     const id = uuidv4();
     const date = new Date();
+    let photo
+    
+    if (req.file) {
+      photo = `http://${req.get("host")}/img/${req.file.filename}`;
+    }
 
     recipeModel
-      .insertRecipe(id, user_id, title, ingredient, date)
+      .insertRecipe(id, user_id, title, ingredient, photo, date)
       .then(() => {
         res.json("Recipe Upload Success");
       })
@@ -66,7 +71,7 @@ const recipeController = {
         next(new createError.InternalServerError());
       });
   },
-  
+
   deleteRecipe: (req, res, next) => {
     const id = req.params.id;
     recipeModel
