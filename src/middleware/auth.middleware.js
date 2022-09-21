@@ -26,4 +26,23 @@ const jwtAuth = (req, res, next) => {
   }
 };
 
-module.exports = jwtAuth;
+const isAdmin = (req, res, next) => {
+  try {
+    const {role} = req.decoded;
+    if(role == 0){
+      next()
+    } else {
+      res.json({
+        message: "admin only"
+      })
+    }
+  } catch (error) {
+    console.log(error)
+    next(createError(500, "internal server error"))
+  }
+};
+
+module.exports = {
+  jwtAuth,
+  isAdmin,
+};

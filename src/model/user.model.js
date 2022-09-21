@@ -14,7 +14,7 @@ const userModel = {
 
   getDetail: (id) => {
     return new Promise((resolve, reject) => {
-      pool.query(`SELECT * FROM users WHERE id = ${id}`, (err, res) => {
+      pool.query(`SELECT * FROM users WHERE user_id = ${id}`, (err, res) => {
         if (err) {
           reject(err);
         }
@@ -23,12 +23,12 @@ const userModel = {
     });
   },
 
-  signUp: (id, name, email, phone, password, date) => {
+  signUp: (id, name, email, phone, password, role, date) => {
     return new Promise((resolve, reject) => {
       pool.query(
-        `INSERT INTO users (id, name, email, phone, password, created_at)
-          VALUES ($1, $2, $3, $4, $5, $6)`,
-        [id, name, email, phone, password, date],
+        `INSERT INTO users (user_id, name, email, phone, password, role, created_at)
+          VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+        [id, name, email, phone, password, role, date],
         (err, res) => {
           if (err) {
             reject(err);
@@ -60,7 +60,7 @@ const userModel = {
           phone = COALESCE($3, phone),
           password = COALESCE($4, password),
           updated_at = COALESCE($5, updated_at)
-          WHERE id = $6
+          WHERE user_id = $6
           `,
         [name, email, phone, password, timestamp, id],
         (err, res) => {
@@ -75,7 +75,7 @@ const userModel = {
 
   deleteAccount: (id) => {
     return new Promise((resolve, reject) => {
-      pool.query(`DELETE FROM users WHERE id = ${id};`, (err, res) => {
+      pool.query(`DELETE FROM users WHERE user_id = ${id};`, (err, res) => {
         if (err) {
           reject(err);
         }
