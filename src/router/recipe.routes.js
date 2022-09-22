@@ -9,8 +9,8 @@ const {
   deleteRecipe,
 } = require("../controller/recipe.controller");
 const { jwtAuth } = require("../middleware/auth.middleware");
-const removeImg = require("../middleware/delete.middleware");
-const upload = require("../middleware/upload.middleware");
+const upload = require("../middleware/recipeUpload.middleware");
+const removeImg = require("../middleware/recipeRemoveImg.middleware");
 
 router
   .get("/", getAll)

@@ -2,7 +2,8 @@ const { unlink } = require("fs");
 const path = require("path");
 const { getDetail } = require("../model/recipe.model");
 
-const removeImg = async (req, res, next) => {
+const recipeRemoveImg
+ = async (req, res, next) => {
   try {
     const id = req.params.id;
     const {
@@ -11,7 +12,7 @@ const removeImg = async (req, res, next) => {
 
     if (recipe.photo) {
       const file = path.basename(recipe.photo);
-      unlink(`./upload/${file}`, (err) => {
+      unlink(`./upload/recipe/${file}`, (err) => {
         if(err){
             console.log(err)
             next()
@@ -25,4 +26,4 @@ const removeImg = async (req, res, next) => {
   }
 };
 
-module.exports = removeImg;
+module.exports = recipeRemoveImg;

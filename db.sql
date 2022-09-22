@@ -6,7 +6,7 @@ CREATE TABLE users (
     email VARCHAR(128) NOT NULL UNIQUE,
     phone VARCHAR(16) NOT NULL,
     password VARCHAR(64) NOT NULL,
-    photo VARCHAR(256),
+    avatar VARCHAR(256),
     role INTEGER NOT NULL,
     created_at TIMESTAMP,
     updated_at TIMESTAMP

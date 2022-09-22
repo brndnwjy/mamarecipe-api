@@ -29,13 +29,19 @@ const userController = {
   },
 
   signUp: async (req, res, next) => {
-    const { name, email, phone, password, role } = req.body;
-    const date = new Date();
     const id = uuidv4();
+    const { name, email, phone, password, role } = req.body;
     const hashedPassword = await hash(password, 10);
+    const avatar = req.file.filename;
+    const date = new Date();
+    const { rowCount: check } = await userModel.emailCheck(email);
+
+    if (check) {
+      return next(createError(403, "E-mail already in use"));
+    }
 
     userModel
-      .signUp(id, name, email, phone, hashedPassword, role, date)
+      .signUp(id, name, email, phone, hashedPassword, avatar, role, date)
       .then(() => {
         res.json("Sign Up Success");
       })
@@ -68,13 +74,13 @@ const userController = {
         const token = generateToken({
           id: user.user_id,
           name: user.name,
-          role: user.role
-        })
+          role: user.role,
+        });
 
         res.json({
           message: "login success",
-          token
-        })
+          token,
+        });
       })
       .catch(() => {
         next(new createError.InternalServerError());
@@ -83,12 +89,11 @@ const userController = {
 
   updateAccount: (req, res, next) => {
     const id = req.params.id;
-    const { name, email, phone, password } = req.body;
-    const date = new Date().toLocaleDateString();
-    const time = new Date().toLocaleTimeString();
-    const timestamp = `${date} - ${time}`;
+    const { name, email, phone } = req.body;
+    const avatar = req.file.filename;
+    const date = new Date()
     userModel
-      .updateAccount(id, name, email, phone, password, timestamp)
+      .updateAccount(id, name, email, phone, avatar, date)
       .then(() => {
         res.json("Account Updated");
       })

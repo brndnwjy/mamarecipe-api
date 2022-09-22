@@ -23,12 +23,12 @@ const userModel = {
     });
   },
 
-  signUp: (id, name, email, phone, password, role, date) => {
+  signUp: (id, name, email, phone, password, avatar, role, date) => {
     return new Promise((resolve, reject) => {
       pool.query(
-        `INSERT INTO users (user_id, name, email, phone, password, role, created_at)
-          VALUES ($1, $2, $3, $4, $5, $6, $7)`,
-        [id, name, email, phone, password, role, date],
+        `INSERT INTO users (user_id, name, email, phone, password, avatar, role, created_at)
+          VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
+        [id, name, email, phone, password, avatar, role, date],
         (err, res) => {
           if (err) {
             reject(err);
@@ -50,7 +50,7 @@ const userModel = {
     });
   },
 
-  updateAccount: (id, name, email, phone, password, timestamp) => {
+  updateAccount: (id, name, email, phone, avatar, date) => {
     return new Promise((resolve, reject) => {
       pool.query(
         `
@@ -58,11 +58,11 @@ const userModel = {
           name = COALESCE($1, name),
           email = COALESCE($2, email),
           phone = COALESCE($3, phone),
-          password = COALESCE($4, password),
+          avatar = COALESCE($4, avatar),
           updated_at = COALESCE($5, updated_at)
           WHERE user_id = $6
           `,
-        [name, email, phone, password, timestamp, id],
+        [name, email, phone, avatar, date, id],
         (err, res) => {
           if (err) {
             reject(err);
