@@ -30,6 +30,17 @@ const recipeModel = {
     });
   },
 
+  countRecipe: () => {
+    return new Promise((resolve, reject) => {
+      pool.query("SELECT COUNT(*) AS total FROM recipes", (err, res) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(res);
+      });
+    });
+  },
+
   insertRecipe: (id, user_id, title, ingredient, photo, date) => {
     return new Promise((resolve, reject) => {
       pool.query(
@@ -70,12 +81,15 @@ const recipeModel = {
 
   deleteRecipe: (id) => {
     return new Promise((resolve, reject) => {
-      pool.query(`DELETE FROM recipes WHERE recipe_id = '${id}'`, (err, res) => {
-        if (err) {
-          reject(err);
+      pool.query(
+        `DELETE FROM recipes WHERE recipe_id = '${id}'`,
+        (err, res) => {
+          if (err) {
+            reject(err);
+          }
+          resolve(res);
         }
-        resolve(res);
-      });
+      );
     });
   },
 };
