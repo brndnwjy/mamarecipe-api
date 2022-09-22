@@ -3,12 +3,14 @@ const { v4: uuidv4 } = require("uuid");
 const { hash, compare } = require("bcryptjs");
 const createError = require("http-errors");
 const generateToken = require("../helper/auth.helper");
+const response = require("../helper/response.helper");
 
 const userController = {
   getAll: (req, res, next) => {
     userModel
       .getAll()
       .then((result) => {
+        response(res, result.rows, 200, "Get all users success");
         res.json(result.rows);
       })
       .catch(() => {
@@ -21,6 +23,7 @@ const userController = {
     userModel
       .getDetail(id)
       .then((result) => {
+        response(res, result.rows, 200, "Get user detail success");
         res.json(result.rows);
       })
       .catch(() => {
@@ -40,10 +43,20 @@ const userController = {
       return next(createError(403, "E-mail already in use"));
     }
 
+    const data = {
+      user_id: id,
+      name,
+      email,
+      phone,
+      role,
+      avatar,
+      date,
+    };
+
     userModel
       .signUp(id, name, email, phone, hashedPassword, avatar, role, date)
       .then(() => {
-        res.json("Sign Up Success");
+        response(res, data, 200, "Sign up success");
       })
       .catch(() => {
         next(new createError.InternalServerError());
@@ -77,10 +90,7 @@ const userController = {
           role: user.role,
         });
 
-        res.json({
-          message: "login success",
-          token,
-        });
+        response(res, {token}, 200, `Logged in! Welcome, ${user.name}`);
       })
       .catch(() => {
         next(new createError.InternalServerError());
@@ -91,23 +101,34 @@ const userController = {
     const id = req.params.id;
     const { name, email, phone } = req.body;
     const avatar = req.file.filename;
-    const date = new Date()
+    const date = new Date();
     userModel
       .updateAccount(id, name, email, phone, avatar, date)
       .then(() => {
-        res.json("Account Updated");
+        response(res, null, 200, "Account updated");
       })
       .catch(() => {
         next(new createError.InternalServerError());
       });
   },
 
-  deleteAccount: (req, res, next) => {
+  deleteAccount: async (req, res, next) => {
     const id = req.params.id;
+    let user;
+
+    await userModel.getDetail(id).then((result) => {
+      user = result.rows[0];
+    });
+
+    console.log(user)
+
+    delete user.avatar;
+    delete user.password;
+
     userModel
       .deleteAccount(id)
       .then(() => {
-        res.json("Account Deleted");
+        response(res, user, 200, "Account deleted");
       })
       .catch(() => {
         next(new createError.InternalServerError());
