@@ -46,17 +46,18 @@ const recipeModel = {
     });
   },
 
-  updateRecipe: (id, title, ingredient, timestamp) => {
+  updateRecipe: (id, title, ingredient, photo, date) => {
     return new Promise((resolve, reject) => {
       pool.query(
         `
             UPDATE recipes SET
             title = COALESCE($1, title),
             ingredient = COALESCE($2, ingredient),
-            updated_at = COALESCE($3, updated_at)
-            WHERE recipe_id = $4
+            photo = COALESCE($3, photo),
+            updated_at = COALESCE($4, updated_at)
+            WHERE recipe_id = $5
             `,
-        [title, ingredient, timestamp, id],
+        [title, ingredient, photo, date, id],
         (err, res) => {
           if (err) {
             reject(err);

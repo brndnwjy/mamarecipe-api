@@ -39,8 +39,8 @@ const recipeController = {
     const { id: user_id } = req.decoded;
     const id = uuidv4();
     const date = new Date();
-    let photo
-    
+    let photo;
+
     if (req.file) {
       photo = `http://${req.get("host")}/img/${req.file.filename}`;
     }
@@ -58,12 +58,15 @@ const recipeController = {
   updateRecipe: (req, res, next) => {
     const id = req.params.id;
     const { title, ingredient } = req.body;
-    const date = new Date().toLocaleDateString();
-    const time = new Date().toLocaleTimeString();
-    const timestamp = `${date} - ${time}`;
+    const date = new Date();
+    let photo;
+
+    if (req.file) {
+      photo = `http://${req.get("host")}/img/${req.file.filename}`;
+    }
 
     recipeModel
-      .updateRecipe(id, title, ingredient, timestamp)
+      .updateRecipe(id, title, ingredient, photo, date)
       .then(() => {
         res.json("Recipe Updated");
       })
@@ -72,12 +75,24 @@ const recipeController = {
       });
   },
 
-  deleteRecipe: (req, res, next) => {
+  deleteRecipe: async (req, res, next) => {
     const id = req.params.id;
+    let recipe;
+
+    await recipeModel.getDetail(id).then((result) => {
+      recipe = result.rows[0];
+    });
+
+    delete recipe.photo;
+    delete recipe.video;
+
     recipeModel
       .deleteRecipe(id)
       .then(() => {
-        res.json("Recipe Deleted");
+        res.json({
+          message: "Recipe removed",
+          recipe,
+        });
       })
       .catch(() => {
         next(new createError.InternalServerError());
