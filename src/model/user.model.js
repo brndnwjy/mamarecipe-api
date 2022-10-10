@@ -83,6 +83,10 @@ const userModel = {
       });
     });
   },
+
+  activation: (id) => {
+    return pool.query('UPDATE users SET status = 1 where user_id = $1', [id])
+  }
 };
 
 module.exports = userModel;

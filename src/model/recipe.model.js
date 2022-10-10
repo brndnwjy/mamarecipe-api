@@ -4,7 +4,7 @@ const recipeModel = {
   getAll: (search, sortBy, sortOrder, limit, offset) => {
     return new Promise((resolve, reject) => {
       pool.query(
-        `SELECT * FROM recipes WHERE title ILIKE '%${search}%' ORDER BY ${sortBy} ${sortOrder} 
+        `SELECT users.name as recipe_owner, recipes.* FROM recipes JOIN users using(user_id) WHERE title ILIKE '%${search}%' ORDER BY ${sortBy} ${sortOrder} 
         LIMIT ${limit} OFFSET ${offset}`,
         (err, res) => {
           if (err) {
@@ -19,7 +19,7 @@ const recipeModel = {
   getDetail: (id) => {
     return new Promise((resolve, reject) => {
       pool.query(
-        `SELECT users.name as recipe_owner, recipes.* FROM recipes JOIN users USING (user_id) WHERE recipe_id = '${id}'`,
+        `SELECT users.name AS recipe_owner, recipes.* FROM recipes JOIN users USING (user_id) WHERE recipe_id = '${id}'`,
         (err, res) => {
           if (err) {
             reject(err);

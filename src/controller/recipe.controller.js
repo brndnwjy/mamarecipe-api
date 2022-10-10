@@ -51,6 +51,7 @@ const recipeController = {
   insertRecipe: (req, res, next) => {
     const { title, ingredient } = req.body;
     const { id: user_id } = req.decoded;
+    console.log(req.decoded)
     const id = uuidv4();
     const date = new Date();
     let photo;

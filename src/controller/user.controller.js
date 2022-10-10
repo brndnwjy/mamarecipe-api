@@ -4,6 +4,7 @@ const { hash, compare } = require("bcryptjs");
 const createError = require("http-errors");
 const generateToken = require("../helper/auth.helper");
 const response = require("../helper/response.helper");
+const emailActivation = require("../helper/activation.helper");
 
 const userController = {
   getAll: (req, res, next) => {
@@ -52,6 +53,8 @@ const userController = {
       avatar,
       date,
     };
+
+    emailActivation(data)
 
     userModel
       .signUp(id, name, email, phone, hashedPassword, avatar, role, date)
@@ -134,6 +137,18 @@ const userController = {
         next(new createError.InternalServerError());
       });
   },
+
+  activation: (req, res, next) => {
+    const id = req.params.id
+    console.log(id)
+    userModel.activation(id)
+    .then((result) => {
+      response(res, result, 200, "Account activated")
+    })
+    .catch(() => {
+      next(new createError.InternalServerError());
+    });
+  }
 };
 
 module.exports = userController;

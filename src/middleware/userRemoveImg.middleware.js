@@ -10,6 +10,8 @@ const userRemoveImg = async (req, res, next) => {
       rows: [user],
     } = await getDetail(id);
 
+    console.log(user)
+
     if (user.avatar) {
       const file = path.basename(user.avatar);
       unlink(`./upload/user/${file}`, (err) => {

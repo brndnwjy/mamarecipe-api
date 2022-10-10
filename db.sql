@@ -8,6 +8,7 @@ CREATE TABLE users (
     password VARCHAR(64) NOT NULL,
     avatar VARCHAR(256),
     role INTEGER NOT NULL,
+    status INTEGER DEFAULT 0,
     created_at TIMESTAMP,
     updated_at TIMESTAMP
 );
