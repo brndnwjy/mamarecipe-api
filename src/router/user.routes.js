@@ -18,8 +18,9 @@ router
   .get("/", jwtAuth, isAdmin, getAll)
   .get("/:id", getDetail)
   .get('/activate/:token/:id', activation)
-  .post("/signup", upload.single("avatar"), signUp)
-  .post("/signin", signIn)
+  // .post("/signup", upload.single("avatar"), signUp)
+  .post("/register", signUp)
+  .post("/login", signIn)
   .put("/:id", jwtAuth, removeImg, upload.single("avatar"), updateAccount)
   .delete("/:id", jwtAuth, removeImg, deleteAccount);
 

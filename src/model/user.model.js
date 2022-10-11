@@ -23,12 +23,12 @@ const userModel = {
     });
   },
 
-  signUp: (id, name, email, phone, password, avatar, role, date) => {
+  signUp: ({user_id, name, email, phone, hashedPassword, role, date}) => {
     return new Promise((resolve, reject) => {
       pool.query(
-        `INSERT INTO users (user_id, name, email, phone, password, avatar, role, created_at)
-          VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
-        [id, name, email, phone, password, avatar, role, date],
+        `INSERT INTO users (user_id, name, email, phone, password, role, created_at)
+          VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+        [user_id, name, email, phone, hashedPassword,  role, date],
         (err, res) => {
           if (err) {
             reject(err);

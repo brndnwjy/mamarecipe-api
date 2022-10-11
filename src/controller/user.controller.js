@@ -4,7 +4,7 @@ const { hash, compare } = require("bcryptjs");
 const createError = require("http-errors");
 const generateToken = require("../helper/auth.helper");
 const response = require("../helper/response.helper");
-const emailActivation = require("../helper/activation.helper");
+// const emailActivation = require("../helper/activation.helper");
 
 const userController = {
   getAll: (req, res, next) => {
@@ -34,9 +34,9 @@ const userController = {
 
   signUp: async (req, res, next) => {
     const id = uuidv4();
-    const { name, email, phone, password, role } = req.body;
+    const { name, email, phone, password } = req.body;
     const hashedPassword = await hash(password, 10);
-    const avatar = req.file.filename;
+    // const avatar = req.file.filename;
     const date = new Date();
     const { rowCount: check } = await userModel.emailCheck(email);
 
@@ -49,15 +49,15 @@ const userController = {
       name,
       email,
       phone,
-      role,
-      avatar,
+      hashedPassword,
+      role: 1,
       date,
     };
 
-    emailActivation(data)
+    // emailActivation(data)
 
     userModel
-      .signUp(id, name, email, phone, hashedPassword, avatar, role, date)
+      .signUp(data)
       .then(() => {
         response(res, data, 200, "Sign up success");
       })
@@ -93,7 +93,7 @@ const userController = {
           role: user.role,
         });
 
-        response(res, {token}, 200, `Logged in! Welcome, ${user.name}`);
+        response(res, {token, user}, 200, `Logged in! Welcome, ${user.name}`);
       })
       .catch(() => {
         next(new createError.InternalServerError());
