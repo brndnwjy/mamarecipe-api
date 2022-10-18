@@ -10,7 +10,7 @@ const recipeController = {
     const sortOrder = req.query.order || "asc";
 
     const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 5;
+    const limit = parseInt(req.query.limit) || 6;
     const offset = (page - 1) * limit;
 
     const {
@@ -23,7 +23,7 @@ const recipeController = {
       currentPage: page,
       limit,
       totalData,
-      totalPage
+      totalPage,
     };
 
     recipeModel
@@ -36,12 +36,45 @@ const recipeController = {
       });
   },
 
+  getOwnRecipe: async (req, res, next) => {
+    const { id } = req.decoded;
+
+    const sortBy = req.query.sortby || "recipe_id";
+    const sortOrder = req.query.order || "asc";
+
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 3;
+    const offset = (page - 1) * limit;
+
+    const {
+      rows: [count],
+    } = await recipeModel.countRecipe();
+    const totalData = parseInt(count.total);
+    const totalPage = Math.ceil(totalData / limit);
+
+    const pagination = {
+      currentPage: page,
+      limit,
+      totalData,
+      totalPage,
+    };
+
+    recipeModel
+      .getOwnRecipe( id, sortBy, sortOrder, limit, offset)
+      .then((result) => {
+        response(res, result.rows, 200, "Get own recipes success", pagination);
+      })
+      .catch(() => {
+        next(new createError.InternalServerError());
+      });
+  },
+
   getDetail: (req, res, next) => {
     const id = req.params.id;
     recipeModel
       .getDetail(id)
       .then((result) => {
-        response(res, result.rows, 200, "Get recipe detail success")
+        response(res, result.rows, 200, "Get recipe detail success");
       })
       .catch(() => {
         next(new createError.InternalServerError());
@@ -51,10 +84,11 @@ const recipeController = {
   insertRecipe: (req, res, next) => {
     const { title, ingredient } = req.body;
     const { id: user_id } = req.decoded;
-    console.log(req.decoded)
     const id = uuidv4();
     const date = new Date();
     let photo;
+
+    console.log(req.decoded)
 
     if (req.file) {
       photo = `http://${req.get("host")}/img/${req.file.filename}`;
@@ -66,13 +100,15 @@ const recipeController = {
       title,
       ingredient,
       photo,
-      date
-    }
+      date,
+    };
+
+    console.log(data)
 
     recipeModel
-      .insertRecipe(id, user_id, title, ingredient, photo, date)
+      .insertRecipe(data)
       .then(() => {
-        response(res, data, 200, `${title} recipe inserted`)
+        response(res, data, 200, `${title} recipe inserted`);
       })
       .catch(() => {
         next(new createError.InternalServerError());
@@ -92,7 +128,7 @@ const recipeController = {
     recipeModel
       .updateRecipe(id, title, ingredient, photo, date)
       .then(() => {
-        response(res, null, 200, "Recipe updated")
+        response(res, null, 200, "Recipe updated");
       })
       .catch(() => {
         next(new createError.InternalServerError());
@@ -113,7 +149,7 @@ const recipeController = {
     recipeModel
       .deleteRecipe(id)
       .then(() => {
-        response(res, recipe, 200, "Recipe removed")
+        response(res, recipe, 200, "Recipe removed");
       })
       .catch(() => {
         next(new createError.InternalServerError());

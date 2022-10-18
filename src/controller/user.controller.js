@@ -7,18 +7,6 @@ const response = require("../helper/response.helper");
 // const emailActivation = require("../helper/activation.helper");
 
 const userController = {
-  getAll: (req, res, next) => {
-    userModel
-      .getAll()
-      .then((result) => {
-        response(res, result.rows, 200, "Get all users success");
-        res.json(result.rows);
-      })
-      .catch(() => {
-        next(new createError.InternalServerError());
-      });
-  },
-
   getDetail: (req, res, next) => {
     const id = req.params.id;
     userModel
@@ -32,11 +20,10 @@ const userController = {
       });
   },
 
-  signUp: async (req, res, next) => {
+  register: async (req, res, next) => {
     const id = uuidv4();
     const { name, email, phone, password } = req.body;
     const hashedPassword = await hash(password, 10);
-    // const avatar = req.file.filename;
     const date = new Date();
     const { rowCount: check } = await userModel.emailCheck(email);
 
@@ -54,11 +41,12 @@ const userController = {
       date,
     };
 
-    // emailActivation(data)
+    // emailActivation(data);
 
     userModel
-      .signUp(data)
+      .register(data)
       .then(() => {
+        delete data.hashedPassword
         response(res, data, 200, "Sign up success");
       })
       .catch(() => {
@@ -66,7 +54,7 @@ const userController = {
       });
   },
 
-  signIn: (req, res, next) => {
+  login: (req, res, next) => {
     const { email, password } = req.body;
 
     userModel
@@ -87,13 +75,30 @@ const userController = {
           return next(createError(403, "E-mail or password incorrect!"));
         }
 
+        delete user.password;
+
         const token = generateToken({
           id: user.user_id,
           name: user.name,
           role: user.role,
         });
 
-        response(res, {token, user}, 200, `Logged in! Welcome, ${user.name}`);
+        response(res, { token, user }, 200, `Logged in! Welcome, ${user.name}`);
+      })
+      .catch(() => {
+        next(new createError.InternalServerError());
+      });
+  },
+
+  updateAvatar: (req, res, next) => {
+    const id = req.params.id;
+    const avatar = req.file.filename;
+    const date = new Date();
+
+    userModel
+      .updateAvatar(id, avatar, date)
+      .then(() => {
+        response(res, null, 200, "Avatar updated");
       })
       .catch(() => {
         next(new createError.InternalServerError());
@@ -123,7 +128,7 @@ const userController = {
       user = result.rows[0];
     });
 
-    console.log(user)
+    console.log(user);
 
     delete user.avatar;
     delete user.password;
@@ -139,16 +144,17 @@ const userController = {
   },
 
   activation: (req, res, next) => {
-    const id = req.params.id
-    console.log(id)
-    userModel.activation(id)
-    .then((result) => {
-      response(res, result, 200, "Account activated")
-    })
-    .catch(() => {
-      next(new createError.InternalServerError());
-    });
-  }
+    const id = req.params.id;
+    console.log(id);
+    userModel
+      .activation(id)
+      .then((result) => {
+        response(res, result, 200, "Account activated");
+      })
+      .catch(() => {
+        next(new createError.InternalServerError());
+      });
+  },
 };
 
 module.exports = userController;

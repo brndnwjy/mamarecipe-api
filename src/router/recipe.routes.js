@@ -3,6 +3,7 @@ const router = express.Router();
 
 const {
   getAll,
+  getOwnRecipe,
   getDetail,
   insertRecipe,
   updateRecipe,
@@ -14,8 +15,9 @@ const removeImg = require("../middleware/recipeRemoveImg.middleware");
 
 router
   .get("/", getAll)
+  .get("/myrecipe", jwtAuth, getOwnRecipe)
   .get("/:id", getDetail)
-  .post("/", jwtAuth, upload.single("photo"), insertRecipe)
+  .post("/",  jwtAuth, upload.single("photo"), insertRecipe)
   .put("/:id", jwtAuth, removeImg, upload.single("photo"), updateRecipe)
   .delete("/:id", jwtAuth, removeImg, deleteRecipe);
 

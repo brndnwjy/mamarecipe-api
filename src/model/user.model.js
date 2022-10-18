@@ -1,17 +1,6 @@
 const pool = require("../config/db");
 
 const userModel = {
-  getAll: () => {
-    return new Promise((resolve, reject) => {
-      pool.query("SELECT * FROM users", (err, res) => {
-        if (err) {
-          reject(err);
-        }
-        resolve(res);
-      });
-    });
-  },
-
   getDetail: (id) => {
     return new Promise((resolve, reject) => {
       pool.query(`SELECT * FROM users WHERE user_id = '${id}'`, (err, res) => {
@@ -23,12 +12,12 @@ const userModel = {
     });
   },
 
-  signUp: ({user_id, name, email, phone, hashedPassword, role, date}) => {
+  register: ({ user_id, name, email, phone, hashedPassword, role, date }) => {
     return new Promise((resolve, reject) => {
       pool.query(
         `INSERT INTO users (user_id, name, email, phone, password, role, created_at)
           VALUES ($1, $2, $3, $4, $5, $6, $7)`,
-        [user_id, name, email, phone, hashedPassword,  role, date],
+        [user_id, name, email, phone, hashedPassword, role, date],
         (err, res) => {
           if (err) {
             reject(err);
@@ -47,6 +36,26 @@ const userModel = {
         }
         resolve(res);
       });
+    });
+  },
+
+  updateAvatar: (id, avatar, date) => {
+    return new Promise((resolve, reject) => {
+      pool.query(
+        `
+          UPDATE users SET
+          avatar = COALESCE($1, avatar),
+          updated_at = COALESCE($2, updated_at)
+          WHERE user_id = $3
+          `,
+        [avatar, date, id],
+        (err, res) => {
+          if (err) {
+            reject(err);
+          }
+          resolve(res);
+        }
+      );
     });
   },
 
@@ -85,8 +94,8 @@ const userModel = {
   },
 
   activation: (id) => {
-    return pool.query('UPDATE users SET status = 1 where user_id = $1', [id])
-  }
+    return pool.query("UPDATE users SET status = 1 where user_id = $1", [id]);
+  },
 };
 
 module.exports = userModel;

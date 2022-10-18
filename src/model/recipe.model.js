@@ -16,6 +16,21 @@ const recipeModel = {
     });
   },
 
+  getOwnRecipe: (id, sortBy, sortOrder, limit, offset) => {
+    return new Promise((resolve, reject) => {
+      pool.query(
+        `SELECT * FROM recipes WHERE user_id = '${id}' ORDER BY ${sortBy} ${sortOrder} 
+        LIMIT ${limit} OFFSET ${offset}`,
+        (err, res) => {
+          if (err) {
+            reject(err);
+          }
+          resolve(res);
+        }
+      );
+    });
+  },
+
   getDetail: (id) => {
     return new Promise((resolve, reject) => {
       pool.query(
@@ -41,12 +56,12 @@ const recipeModel = {
     });
   },
 
-  insertRecipe: (id, user_id, title, ingredient, photo, date) => {
+  insertRecipe: ({recipe_id, user_id, title, ingredient, photo, date}) => {
     return new Promise((resolve, reject) => {
       pool.query(
         `INSERT INTO recipes (recipe_id, user_id, title, ingredient, photo, created_at)
             VALUES ($1, $2, $3, $4, $5, $6)`,
-        [id, user_id, title, ingredient, photo, date],
+        [recipe_id, user_id, title, ingredient, photo, date],
         (err, res) => {
           if (err) {
             reject(err);
