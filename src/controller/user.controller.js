@@ -92,8 +92,12 @@ const userController = {
 
   updateAvatar: (req, res, next) => {
     const id = req.params.id;
-    const avatar = req.file.filename;
+    let avatar = req.file.filename;
     const date = new Date();
+
+    if(avatar){
+      avatar = `http://${req.get("host")}/ava/${req.file.filename}`
+    }
 
     userModel
       .updateAvatar(id, avatar, date)

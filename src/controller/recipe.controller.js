@@ -43,7 +43,7 @@ const recipeController = {
     const sortOrder = req.query.order || "asc";
 
     const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 3;
+    const limit = parseInt(req.query.limit) || 6;
     const offset = (page - 1) * limit;
 
     const {

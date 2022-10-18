@@ -31,6 +31,7 @@ app.use(
 app.use("/v1", main);
 
 app.use("/img", express.static(path.join(__dirname, "/upload/recipe")));
+app.use("/ava", express.static(path.join(__dirname, "/upload/user")));
 
 app.all("*", (req, res, next) => {
   next(new createError.NotFound());
