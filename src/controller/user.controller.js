@@ -92,23 +92,28 @@ const userController = {
   },
 
   updateAccount: async (req, res, next) => {
-    const id = req.params.id;
-    const { name } = req.body;
-    let avatar;
-    const date = new Date();
+    try {
+      const id = req.params.id;
+      const { name } = req.body;
+      let avatar;
+      const date = new Date();
 
-    if (req.file) {
-      avatar = await cloudinary.uploader.upload(req.file.path);
+      if (req.file) {
+        avatar = await cloudinary.uploader.upload(req.file.path);
+      }
+
+      userModel
+        .updateAccount(id, name, avatar, date)
+        .then(() => {
+          response(res, null, 200, "Account updated");
+        })
+        .catch((err) => {
+          console.log(err);
+          next(new createError.InternalServerError());
+        });
+    } catch (error) {
+      console.log(error);
     }
-
-    userModel
-      .updateAccount(id, name, avatar, date)
-      .then(() => {
-        response(res, null, 200, "Account updated");
-      })
-      .catch(() => {
-        next(new createError.InternalServerError());
-      });
   },
 
   deleteAccount: async (req, res, next) => {

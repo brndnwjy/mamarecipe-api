@@ -83,72 +83,80 @@ const recipeController = {
   },
 
   insertRecipe: async (req, res, next) => {
-    const { title, ingredient } = req.body;
-    const { id: user_id } = req.decoded;
-    const id = uuidv4();
-    const date = new Date();
-    let photo;
+    try {
+      const { title, ingredient } = req.body;
+      const { id: user_id } = req.decoded;
+      const id = uuidv4();
+      const date = new Date();
+      let photo;
 
-    console.log(req.decoded);
+      console.log(req.decoded);
 
-    if (req.file) {
-      photo = await cloudinary.uploader.upload(req.file.path);
+      if (req.file) {
+        photo = await cloudinary.uploader.upload(req.file.path);
+      }
+
+      const data = {
+        recipe_id: id,
+        user_id,
+        title,
+        ingredient,
+        photo,
+        date,
+        photo_public_id: photo.public_id,
+        photo_url: photo.url,
+        photo_secure_url: photo.secure_url,
+      };
+
+      console.log(data);
+
+      recipeModel
+        .insertRecipe(data)
+        .then(() => {
+          response(res, data, 200, `${title} recipe inserted`);
+        })
+        .catch((err) => {
+          console.log(err);
+          next(new createError.InternalServerError());
+        });
+    } catch (error) {
+      console.log(error);
     }
-
-    const data = {
-      recipe_id: id,
-      user_id,
-      title,
-      ingredient,
-      photo,
-      date,
-      photo_public_id: photo.public_id,
-      photo_url: photo.url,
-      photo_secure_url: photo.secure_url,
-    };
-
-    console.log(data);
-
-    recipeModel
-      .insertRecipe(data)
-      .then(() => {
-        response(res, data, 200, `${title} recipe inserted`);
-      })
-      .catch((err) => {
-      console.log(err)
-        next(new createError.InternalServerError());
-      });
   },
 
   updateRecipe: async (req, res, next) => {
-    const id = req.params.id;
-    const { title, ingredient } = req.body;
-    const date = new Date();
-    let photo;
+    try {
+      const id = req.params.id;
+      const { title, ingredient } = req.body;
+      const date = new Date();
+      let photo;
 
-    if (req.file) {
-      photo = await cloudinary.uploader.upload(req.file.path);
+      if (req.file) {
+        photo = await cloudinary.uploader.upload(req.file.path);
+      }
+
+      const data = {
+        id,
+        title,
+        ingredient,
+        photo,
+        date,
+        photo_public_id: photo.public_id,
+        photo_url: photo.url,
+        photo_secure_url: photo.secure_url,
+      };
+
+      recipeModel
+        .updateRecipe(data)
+        .then(() => {
+          response(res, null, 200, "Recipe updated");
+        })
+        .catch(() => {
+          next(new createError.InternalServerError());
+        });
+    } catch (error) {
+      console.log(error);
     }
-
-    const data = {
-      id,
-      title,
-      ingredient,
-      photo,
-      date,
-      photo_public_id: photo.public_id,
-      photo_url: photo.url,
-      photo_secure_url: photo.secure_url,
-    };
-
-    recipeModel
-      .updateRecipe(data)
-      .then(() => {
-        response(res, null, 200, "Recipe updated");
-      })
-      .catch(() => {
-        next(new createError.InternalServerError());
-      });
   },
 
   // localhost

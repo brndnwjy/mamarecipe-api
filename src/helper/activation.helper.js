@@ -58,7 +58,7 @@ const emailActivation = async (data) => {
             <div id="content">
                 <h2>Welcome to Mamarecipe</h2>
             <br>
-            <p>only 1 step left for your account registration. <a id='clickhere' href="http://localhost:4000/v1/user/activate/${token}/${data.user_id}">click here</a> to activate your account </p>
+            <p>only 1 step left for your account registration. <a id='clickhere' href="https://zany-tan-beetle-kit.cyclic.app/v1/user/activate/${token}/${data.user_id}">click here</a> to activate your account </p>
             </div>
         </div>
     </body>
