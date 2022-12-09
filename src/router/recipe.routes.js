@@ -18,7 +18,7 @@ router
   .get("/myrecipe", jwtAuth, getOwnRecipe)
   .get("/:id", getDetail)
   .post("/",  jwtAuth, upload.single("photo"), insertRecipe)
-  .put("/:id", jwtAuth, removeImg, upload.single("photo"), updateRecipe)
+  .put("/:id", jwtAuth, upload.single("photo"), updateRecipe)
   .delete("/:id", jwtAuth, removeImg, deleteRecipe);
 
 module.exports = router;

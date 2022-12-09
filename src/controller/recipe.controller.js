@@ -2,6 +2,7 @@ const recipeModel = require("../model/recipe.model");
 const { v4: uuidv4 } = require("uuid");
 const createError = require("http-errors");
 const response = require("../helper/response.helper");
+const cloudinary = require("../helper/cloudinary");
 
 const recipeController = {
   getAll: async (req, res, next) => {
@@ -15,7 +16,7 @@ const recipeController = {
 
     const {
       rows: [count],
-    } = await recipeModel.countRecipe();
+    } = await recipeModel.countFilterRecipe(search);
     const totalData = parseInt(count.total);
     const totalPage = Math.ceil(totalData / limit);
 
@@ -60,7 +61,7 @@ const recipeController = {
     };
 
     recipeModel
-      .getOwnRecipe( id, sortBy, sortOrder, limit, offset)
+      .getOwnRecipe(id, sortBy, sortOrder, limit, offset)
       .then((result) => {
         response(res, result.rows, 200, "Get own recipes success", pagination);
       })
@@ -81,17 +82,17 @@ const recipeController = {
       });
   },
 
-  insertRecipe: (req, res, next) => {
+  insertRecipe: async (req, res, next) => {
     const { title, ingredient } = req.body;
     const { id: user_id } = req.decoded;
     const id = uuidv4();
     const date = new Date();
     let photo;
 
-    console.log(req.decoded)
+    console.log(req.decoded);
 
     if (req.file) {
-      photo = `http://${req.get("host")}/img/${req.file.filename}`;
+      photo = await cloudinary.uploader.upload(req.file.path);
     }
 
     const data = {
@@ -101,32 +102,47 @@ const recipeController = {
       ingredient,
       photo,
       date,
+      photo_public_id: photo.public_id,
+      photo_url: photo.url,
+      photo_secure_url: photo.secure_url,
     };
 
-    console.log(data)
+    console.log(data);
 
     recipeModel
       .insertRecipe(data)
       .then(() => {
         response(res, data, 200, `${title} recipe inserted`);
       })
-      .catch(() => {
+      .catch((err) => {
+      console.log(err)
         next(new createError.InternalServerError());
       });
   },
 
-  updateRecipe: (req, res, next) => {
+  updateRecipe: async (req, res, next) => {
     const id = req.params.id;
     const { title, ingredient } = req.body;
     const date = new Date();
     let photo;
 
     if (req.file) {
-      photo = `http://${req.get("host")}/img/${req.file.filename}`;
+      photo = await cloudinary.uploader.upload(req.file.path);
     }
 
+    const data = {
+      id,
+      title,
+      ingredient,
+      photo,
+      date,
+      photo_public_id: photo.public_id,
+      photo_url: photo.url,
+      photo_secure_url: photo.secure_url,
+    };
+
     recipeModel
-      .updateRecipe(id, title, ingredient, photo, date)
+      .updateRecipe(data)
       .then(() => {
         response(res, null, 200, "Recipe updated");
       })
@@ -134,6 +150,61 @@ const recipeController = {
         next(new createError.InternalServerError());
       });
   },
+
+  // localhost
+  // insertRecipe: (req, res, next) => {
+  //   const { title, ingredient } = req.body;
+  //   const { id: user_id } = req.decoded;
+  //   const id = uuidv4();
+  //   const date = new Date();
+  //   let photo;
+
+  //   console.log(req.decoded)
+
+  //   if (req.file) {
+  //     photo = `http://${req.get("host")}/img/${req.file.filename}`;
+  //   }
+
+  //   const data = {
+  //     recipe_id: id,
+  //     user_id,
+  //     title,
+  //     ingredient,
+  //     photo,
+  //     date,
+  //   };
+
+  //   console.log(data)
+
+  //   recipeModel
+  //     .insertRecipe(data)
+  //     .then(() => {
+  //       response(res, data, 200, `${title} recipe inserted`);
+  //     })
+  //     .catch(() => {
+  //       next(new createError.InternalServerError());
+  //     });
+  // },
+
+  // updateRecipe: (req, res, next) => {
+  //   const id = req.params.id;
+  //   const { title, ingredient } = req.body;
+  //   const date = new Date();
+  //   let photo;
+
+  //   if (req.file) {
+  //     photo = `http://${req.get("host")}/img/${req.file.filename}`;
+  //   }
+
+  //   recipeModel
+  //     .updateRecipe(id, title, ingredient, photo, date)
+  //     .then(() => {
+  //       response(res, null, 200, "Recipe updated");
+  //     })
+  //     .catch(() => {
+  //       next(new createError.InternalServerError());
+  //     });
+  // },
 
   deleteRecipe: async (req, res, next) => {
     const id = req.params.id;

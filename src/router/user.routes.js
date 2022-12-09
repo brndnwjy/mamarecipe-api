@@ -5,10 +5,9 @@ const {
   getDetail,
   register,
   login,
-  updateAvatar,
-  // updateAccount,
   deleteAccount,
-  activation
+  activation,
+  updateAccount
 } = require("../controller/user.controller");
 const { jwtAuth } = require("../middleware/auth.middleware");
 const upload = require("../middleware/userUpload.middleware");
@@ -19,8 +18,7 @@ router
   .get('/activate/:token/:id', activation)
   .post("/register", register)
   .post("/login", login)
-  .put("/:id", jwtAuth, upload.single("avatar"), updateAvatar)
-  // .put("/:id", jwtAuth, upload.single("avatar"), updateAccount)
+  .put("/:id", jwtAuth, upload.single("avatar"), updateAccount)
   .delete("/:id", jwtAuth, removeImg, deleteAccount);
 
 module.exports = router;

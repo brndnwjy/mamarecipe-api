@@ -2,7 +2,6 @@ const { unlink } = require("fs");
 const path = require("path");
 const { getDetail } = require("../model/user.model");
 
-
 const userRemoveImg = async (req, res, next) => {
   try {
     const id = req.params.id;
@@ -10,7 +9,7 @@ const userRemoveImg = async (req, res, next) => {
       rows: [user],
     } = await getDetail(id);
 
-    console.log(user)
+    console.log(user);
 
     if (user.avatar) {
       const file = path.basename(user.avatar);

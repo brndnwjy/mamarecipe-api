@@ -39,16 +39,17 @@ const userModel = {
     });
   },
 
-  updateAvatar: (id, avatar, date) => {
+  updateAccount: (id, name, avatar, date) => {
     return new Promise((resolve, reject) => {
       pool.query(
         `
           UPDATE users SET
-          avatar = COALESCE($1, avatar),
-          updated_at = COALESCE($2, updated_at)
-          WHERE user_id = $3
+          name = COALESCE($1, name),
+          avatar = COALESCE($2, avatar),
+          updated_at = COALESCE($3, updated_at)
+          WHERE user_id = $4
           `,
-        [avatar, date, id],
+        [name, avatar, date, id],
         (err, res) => {
           if (err) {
             reject(err);
@@ -59,28 +60,6 @@ const userModel = {
     });
   },
 
-  updateAccount: (id, name, email, phone, avatar, date) => {
-    return new Promise((resolve, reject) => {
-      pool.query(
-        `
-          UPDATE users SET
-          name = COALESCE($1, name),
-          email = COALESCE($2, email),
-          phone = COALESCE($3, phone),
-          avatar = COALESCE($4, avatar),
-          updated_at = COALESCE($5, updated_at)
-          WHERE user_id = $6
-          `,
-        [name, email, phone, avatar, date, id],
-        (err, res) => {
-          if (err) {
-            reject(err);
-          }
-          resolve(res);
-        }
-      );
-    });
-  },
 
   deleteAccount: (id) => {
     return new Promise((resolve, reject) => {

@@ -4,7 +4,8 @@ const { hash, compare } = require("bcryptjs");
 const createError = require("http-errors");
 const generateToken = require("../helper/auth.helper");
 const response = require("../helper/response.helper");
-// const emailActivation = require("../helper/activation.helper");
+const cloudinary = require("../helper/cloudinary");
+const emailActivation = require("../helper/activation.helper");
 
 const userController = {
   getDetail: (req, res, next) => {
@@ -41,12 +42,12 @@ const userController = {
       date,
     };
 
-    // emailActivation(data);
+    emailActivation(data);
 
     userModel
       .register(data)
       .then(() => {
-        delete data.hashedPassword
+        delete data.hashedPassword;
         response(res, data, 200, "Sign up success");
       })
       .catch(() => {
@@ -90,32 +91,18 @@ const userController = {
       });
   },
 
-  updateAvatar: (req, res, next) => {
+  updateAccount: async (req, res, next) => {
     const id = req.params.id;
-    let avatar = req.file.filename;
+    const { name } = req.body;
+    let avatar;
     const date = new Date();
 
-    if(avatar){
-      avatar = `http://${req.get("host")}/ava/${req.file.filename}`
+    if (req.file) {
+      avatar = await cloudinary.uploader.upload(req.file.path);
     }
 
     userModel
-      .updateAvatar(id, avatar, date)
-      .then(() => {
-        response(res, null, 200, "Avatar updated");
-      })
-      .catch(() => {
-        next(new createError.InternalServerError());
-      });
-  },
-
-  updateAccount: (req, res, next) => {
-    const id = req.params.id;
-    const { name, email, phone } = req.body;
-    const avatar = req.file.filename;
-    const date = new Date();
-    userModel
-      .updateAccount(id, name, email, phone, avatar, date)
+      .updateAccount(id, name, avatar, date)
       .then(() => {
         response(res, null, 200, "Account updated");
       })
