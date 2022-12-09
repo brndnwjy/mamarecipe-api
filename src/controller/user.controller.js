@@ -102,8 +102,18 @@ const userController = {
         avatar = await cloudinary.uploader.upload(req.file.path);
       }
 
+      const data = {
+        id,
+        name,
+        avatar,
+        date,
+        avatar_public_id: avatar.public_id,
+        avatar_url: avatar.url,
+        avatar_secure_url: avatar.secure_url,
+      };
+
       userModel
-        .updateAccount(id, name, avatar, date)
+        .updateAccount(data)
         .then(() => {
           response(res, null, 200, "Account updated");
         })

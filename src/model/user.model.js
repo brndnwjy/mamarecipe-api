@@ -39,17 +39,20 @@ const userModel = {
     });
   },
 
-  updateAccount: (id, name, avatar, date) => {
+  updateAccount: ({id, name, avatar, avatar_url, avatar_secure_url, avatar_public_id, date}) => {
     return new Promise((resolve, reject) => {
       pool.query(
         `
           UPDATE users SET
           name = COALESCE($1, name),
           avatar = COALESCE($2, avatar),
-          updated_at = COALESCE($3, updated_at)
-          WHERE user_id = $4
+          avatar_url = COALESCE($3, avatar_url),
+          avatar_secure_url = COALESCE($4, avatar_secure_url),
+          avatar_public_id = COALESCE($5, avatar_public_id),
+          updated_at = COALESCE($6, updated_at)
+          WHERE user_id = $7
           `,
-        [name, avatar, date, id],
+        [name, avatar, avatar_url, avatar_secure_url, avatar_public_id, date, id],
         (err, res) => {
           if (err) {
             reject(err);
