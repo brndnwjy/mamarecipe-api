@@ -105,11 +105,8 @@ const userController = {
       const data = {
         id,
         name,
-        avatar,
-        date,
-        avatar_public_id: avatar.public_id,
-        avatar_url: avatar.url,
-        avatar_secure_url: avatar.secure_url,
+        file: avatar.url,
+        date
       };
 
       userModel
