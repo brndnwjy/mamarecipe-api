@@ -105,11 +105,11 @@ const recipeModel = {
             WHERE recipe_id = $5
             `,
         [
-          data.id,
           data.title,
           data.ingredient,
           data.file,
           data.date,
+          data.id,
         ],
         (err, res) => {
           if (err) {
