@@ -32,7 +32,8 @@ const recipeController = {
       .then((result) => {
         response(res, result.rows, 200, "Get all recipes success", pagination);
       })
-      .catch(() => {
+      .catch((err) => {
+        console.log(err);
         next(new createError.InternalServerError());
       });
   },
@@ -65,7 +66,8 @@ const recipeController = {
       .then((result) => {
         response(res, result.rows, 200, "Get own recipes success", pagination);
       })
-      .catch(() => {
+      .catch((err) => {
+        console.log(err);
         next(new createError.InternalServerError());
       });
   },
@@ -77,7 +79,8 @@ const recipeController = {
       .then((result) => {
         response(res, result.rows, 200, "Get recipe detail success");
       })
-      .catch(() => {
+      .catch((err) => {
+        console.log(err);
         next(new createError.InternalServerError());
       });
   },
@@ -101,7 +104,7 @@ const recipeController = {
         user_id,
         title,
         ingredient,
-        file : photo.url,
+        file: photo.url,
         date,
       };
 
@@ -145,7 +148,8 @@ const recipeController = {
         .then(() => {
           response(res, null, 200, "Recipe updated");
         })
-        .catch(() => {
+        .catch((err) => {
+          console.log(err);
           next(new createError.InternalServerError());
         });
     } catch (error) {
@@ -224,7 +228,8 @@ const recipeController = {
       .then(() => {
         response(res, recipe, 200, "Recipe removed");
       })
-      .catch(() => {
+      .catch((err) => {
+        console.log(err);
         next(new createError.InternalServerError());
       });
   },

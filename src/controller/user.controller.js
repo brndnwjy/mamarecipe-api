@@ -16,7 +16,8 @@ const userController = {
         response(res, result.rows, 200, "Get user detail success");
         res.json(result.rows);
       })
-      .catch(() => {
+      .catch((err) => {
+        console.log(err);
         next(new createError.InternalServerError());
       });
   },
@@ -50,7 +51,8 @@ const userController = {
         delete data.hashedPassword;
         response(res, data, 200, "Sign up success");
       })
-      .catch(() => {
+      .catch((err) => {
+        console.log(err);
         next(new createError.InternalServerError());
       });
   },
@@ -86,7 +88,8 @@ const userController = {
 
         response(res, { token, user }, 200, `Logged in! Welcome, ${user.name}`);
       })
-      .catch(() => {
+      .catch((err) => {
+        console.log(err);
         next(new createError.InternalServerError());
       });
   },
@@ -106,7 +109,7 @@ const userController = {
         id,
         name,
         file: avatar.url,
-        date
+        date,
       };
 
       userModel
@@ -141,7 +144,8 @@ const userController = {
       .then(() => {
         response(res, user, 200, "Account deleted");
       })
-      .catch(() => {
+      .catch((err) => {
+        console.log(err);
         next(new createError.InternalServerError());
       });
   },
