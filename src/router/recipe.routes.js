@@ -11,7 +11,6 @@ const {
 } = require("../controller/recipe.controller");
 const { jwtAuth } = require("../middleware/auth.middleware");
 const upload = require("../middleware/recipeUpload.middleware");
-const removeImg = require("../middleware/recipeRemoveImg.middleware");
 
 router
   .get("/", getAll)
@@ -19,6 +18,6 @@ router
   .get("/:id", getDetail)
   .post("/",  jwtAuth, upload.single("photo"), insertRecipe)
   .put("/:id", jwtAuth, upload.single("photo"), updateRecipe)
-  .delete("/:id", jwtAuth, removeImg, deleteRecipe);
+  .delete("/:id", jwtAuth, deleteRecipe);
 
 module.exports = router;
