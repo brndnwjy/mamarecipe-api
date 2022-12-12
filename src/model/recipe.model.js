@@ -70,72 +70,19 @@ const recipeModel = {
     });
   },
 
-  // insertRecipe: (data) => {
-  //   return new Promise((resolve, reject) => {
-  //     pool.query(
-  //       `INSERT INTO recipes (recipe_id, user_id, title, ingredient, photo, photo_url, photo_secure_url, 
-  //         photo_pub_id, created_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
-  //       [
-  //         data.recipe_id,
-  //         data.user_id,
-  //         data.title,
-  //         data.ingredient,
-  //         data.photo,
-  //         data.photo_url,
-  //         data.photo_secure_url,
-  //         data.photo_public_id,
-  //         data.date,
-  //       ],
-  //       (err, res) => {
-  //         if (err) {
-  //           reject(err);
-  //         }
-  //         resolve(res);
-  //       }
-  //     );
-  //   });
-  // },
-
-  // updateRecipe: (data) => {
-  //   return new Promise((resolve, reject) => {
-  //     pool.query(
-  //       `
-  //           UPDATE recipes SET
-  //           title = COALESCE($1, title),
-  //           ingredient = COALESCE($2, ingredient),
-  //           photo = COALESCE($3, photo),
-  //           photo_url = COALESCE($4, photo_url),
-  //           photo_secure_url = COALESCE($5, photo_secure_url),
-  //           photo_public_id = COALESCE($6, photo_public_id),
-  //           updated_at = COALESCE($7, updated_at)
-  //           WHERE recipe_id = $8
-  //           `,
-  //       [
-  //         data.id,
-  //         data.title,
-  //         data.ingredient,
-  //         data.photo,
-  //         data.photo_url,
-  //         data.photo_secure_url,
-  //         data.photo_public_id,
-  //         data.date,
-  //       ],
-  //       (err, res) => {
-  //         if (err) {
-  //           reject(err);
-  //         }
-  //         resolve(res);
-  //       }
-  //     );
-  //   });
-  // },
-
-  insertRecipe: ({recipe_id, user_id, title, ingredient, photo, date}) => {
+  insertRecipe: (data) => {
     return new Promise((resolve, reject) => {
       pool.query(
         `INSERT INTO recipes (recipe_id, user_id, title, ingredient, photo, created_at)
-            VALUES ($1, $2, $3, $4, $5, $6)`,
-        [recipe_id, user_id, title, ingredient, photo, date],
+        VALUES ($1, $2, $3, $4, $5, $6)`,
+        [
+          data.recipe_id,
+          data.user_id,
+          data.title,
+          data.ingredient,
+          data.file,
+          data.date,
+        ],
         (err, res) => {
           if (err) {
             reject(err);
@@ -146,7 +93,7 @@ const recipeModel = {
     });
   },
 
-  updateRecipe: (id, title, ingredient, photo, date) => {
+  updateRecipe: (data) => {
     return new Promise((resolve, reject) => {
       pool.query(
         `
@@ -157,7 +104,13 @@ const recipeModel = {
             updated_at = COALESCE($4, updated_at)
             WHERE recipe_id = $5
             `,
-        [title, ingredient, photo, date, id],
+        [
+          data.id,
+          data.title,
+          data.ingredient,
+          data.file,
+          data.date,
+        ],
         (err, res) => {
           if (err) {
             reject(err);
@@ -167,6 +120,44 @@ const recipeModel = {
       );
     });
   },
+
+  // insertRecipe: ({recipe_id, user_id, title, ingredient, photo, date}) => {
+  //   return new Promise((resolve, reject) => {
+  //     pool.query(
+  //       `INSERT INTO recipes (recipe_id, user_id, title, ingredient, photo, created_at)
+  //           VALUES ($1, $2, $3, $4, $5, $6)`,
+  //       [recipe_id, user_id, title, ingredient, photo, date],
+  //       (err, res) => {
+  //         if (err) {
+  //           reject(err);
+  //         }
+  //         resolve(res);
+  //       }
+  //     );
+  //   });
+  // },
+
+  // updateRecipe: (id, title, ingredient, photo, date) => {
+  //   return new Promise((resolve, reject) => {
+  //     pool.query(
+  //       `
+  //           UPDATE recipes SET
+  //           title = COALESCE($1, title),
+  //           ingredient = COALESCE($2, ingredient),
+  //           photo = COALESCE($3, photo),
+  //           updated_at = COALESCE($4, updated_at)
+  //           WHERE recipe_id = $5
+  //           `,
+  //       [title, ingredient, photo, date, id],
+  //       (err, res) => {
+  //         if (err) {
+  //           reject(err);
+  //         }
+  //         resolve(res);
+  //       }
+  //     );
+  //   });
+  // },
 
   deleteRecipe: (id) => {
     return new Promise((resolve, reject) => {

@@ -101,11 +101,8 @@ const recipeController = {
         user_id,
         title,
         ingredient,
-        photo,
+        file : photo.url,
         date,
-        photo_public_id: photo.public_id,
-        photo_url: photo.url,
-        photo_secure_url: photo.secure_url,
       };
 
       console.log(data);
@@ -139,11 +136,8 @@ const recipeController = {
         id,
         title,
         ingredient,
-        photo,
+        file: photo.url,
         date,
-        photo_public_id: photo.public_id,
-        photo_url: photo.url,
-        photo_secure_url: photo.secure_url,
       };
 
       recipeModel
