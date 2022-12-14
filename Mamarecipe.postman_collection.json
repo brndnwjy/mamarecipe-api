@@ -1,0 +1,465 @@
+{
+	"info": {
+		"_postman_id": "eeae35e3-c864-499a-9ecc-02a94d290ded",
+		"name": "Mamarecipe",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "GetDetail",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://zany-tan-beetle-kit.cyclic.app/v1/user/78433354-6dae-41fd-9464-069cd8a91be9",
+							"protocol": "https",
+							"host": [
+								"zany-tan-beetle-kit",
+								"cyclic",
+								"app"
+							],
+							"path": [
+								"v1",
+								"user",
+								"78433354-6dae-41fd-9464-069cd8a91be9"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"aldo\",\r\n    \"email\": \"aldo@mail.com\",\r\n    \"phone\": \"021857466498\",\r\n    \"password\": \"aldo123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://zany-tan-beetle-kit.cyclic.app/v1/user/register",
+							"protocol": "https",
+							"host": [
+								"zany-tan-beetle-kit",
+								"cyclic",
+								"app"
+							],
+							"path": [
+								"v1",
+								"user",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"brandon@mail.com\",\r\n    \"password\": \"brandon123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://zany-tan-beetle-kit.cyclic.app/v1/user/login",
+							"protocol": "https",
+							"host": [
+								"zany-tan-beetle-kit",
+								"cyclic",
+								"app"
+							],
+							"path": [
+								"v1",
+								"user",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Avatar",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImYwNjY5MGE0LWNkMjEtNDk2Yi05YjJiLWJiNThlMWE2ZDExYSIsIm5hbWUiOiJidWRpbWFuIiwicm9sZSI6MSwiaWF0IjoxNjY1NzMwMzk4fQ.zJcDL_wMxVgnU3pWyNX13V5naFkwKu6ab4HsOq1n2sQ",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "avatar",
+									"type": "file",
+									"src": "/C:/Users/brndnwjy/Downloads/WhatsApp Image 2022-10-08 at 14.12.36.jpeg"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://zany-tan-beetle-kit.cyclic.app/v1/user/f06690a4-cd21-496b-9b2b-bb58e1a6d11a",
+							"protocol": "https",
+							"host": [
+								"zany-tan-beetle-kit",
+								"cyclic",
+								"app"
+							],
+							"path": [
+								"v1",
+								"user",
+								"f06690a4-cd21-496b-9b2b-bb58e1a6d11a"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateAccount",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNiMzIxZjFjLTdmODUtNGI0MC04ZjM1LTg4MjlkYjBiYzcwMiIsIm5hbWUiOiJJcWJhbCIsInJvbGUiOjEsImlhdCI6MTY3MDYwMTQxMX0.7uTn_PdFQz2KB7Z7afKiQi-L_--wl7sNQNc4M4zovP8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjdkZjg0ODhkLTRlNGQtNDQ4Ny05NDQ4LTczNTBmMjE1NzVjZCIsIm5hbWUiOiJidWRpbWFuIiwicm9sZSI6MSwiaWF0IjoxNjYzODY1MTMwfQ.Ijq3dzxOxAB4cx4tOfgpW9aHlk5kTxgdR-ljUdxDDO4",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "budi mandonsa",
+									"type": "default",
+									"disabled": true
+								},
+								{
+									"key": "avatar",
+									"type": "file",
+									"src": "/C:/Users/brndnwjy/Downloads/baseball-hat.jpg"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://zany-tan-beetle-kit.cyclic.app/v1/user/cb321f1c-7f85-4b40-8f35-8829db0bc702",
+							"protocol": "https",
+							"host": [
+								"zany-tan-beetle-kit",
+								"cyclic",
+								"app"
+							],
+							"path": [
+								"v1",
+								"user",
+								"cb321f1c-7f85-4b40-8f35-8829db0bc702"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteAccount",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImYwNjY5MGE0LWNkMjEtNDk2Yi05YjJiLWJiNThlMWE2ZDExYSIsIm5hbWUiOiJidWRpbWFuIiwicm9sZSI6MSwiaWF0IjoxNjY1NzMwMzk4fQ.zJcDL_wMxVgnU3pWyNX13V5naFkwKu6ab4HsOq1n2sQ",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "https://zany-tan-beetle-kit.cyclic.app/v1/user/f06690a4-cd21-496b-9b2b-bb58e1a6d11a",
+							"protocol": "https",
+							"host": [
+								"zany-tan-beetle-kit",
+								"cyclic",
+								"app"
+							],
+							"path": [
+								"v1",
+								"user",
+								"f06690a4-cd21-496b-9b2b-bb58e1a6d11a"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Recipes",
+			"item": [
+				{
+					"name": "GetAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://zany-tan-beetle-kit.cyclic.app/v1/recipe",
+							"protocol": "https",
+							"host": [
+								"zany-tan-beetle-kit",
+								"cyclic",
+								"app"
+							],
+							"path": [
+								"v1",
+								"recipe"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Own Recipe",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://zany-tan-beetle-kit.cyclic.app/v1/recipe/myrecipe",
+							"protocol": "https",
+							"host": [
+								"zany-tan-beetle-kit",
+								"cyclic",
+								"app"
+							],
+							"path": [
+								"v1",
+								"recipe",
+								"myrecipe"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAll (with search & filter)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://zany-tan-beetle-kit.cyclic.app/v1/recipe?search=ayam",
+							"protocol": "https",
+							"host": [
+								"zany-tan-beetle-kit",
+								"cyclic",
+								"app"
+							],
+							"path": [
+								"v1",
+								"recipe"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "ayam"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetDetail",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://zany-tan-beetle-kit.cyclic.app/v1/recipe/0705212f-e4cc-4cba-8690-fb56f88527ee",
+							"protocol": "https",
+							"host": [
+								"zany-tan-beetle-kit",
+								"cyclic",
+								"app"
+							],
+							"path": [
+								"v1",
+								"recipe",
+								"0705212f-e4cc-4cba-8690-fb56f88527ee"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "InsertRecipe",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAwZjRmZTBkLTYxZGEtNDBhYS1hN2FiLTc1YTA2MzdjNWQ4NiIsIm5hbWUiOiJCcmVuZGFuIiwicm9sZSI6MSwiaWF0IjoxNjcwNjAyMTkwfQ.usG8CYpt0sUZ8gTJkugHBtyH_iCDxwxq2_ywPsTHQwY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVmNGJlMWIxLWI3NTAtNGIxOC1hYzc5LTc3ZmZiOWQ2NmQ5MyIsIm5hbWUiOiJhbGRvIiwicm9sZSI6MSwiaWF0IjoxNjY1NzMyMzEwfQ.lBPZLVGit_uziYGXBmjQmmrBmeIqNsvRZrPADU-sDLs",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "Mi Ayam",
+									"type": "default"
+								},
+								{
+									"key": "ingredient",
+									"value": "Ayam, Cuka, Garam, Air, Jahe, Bawang Putih, Daun Bawang, Garam, Lada, Kecap Asin, Minyak Wijen, Mi, Selada",
+									"type": "default"
+								},
+								{
+									"key": "photo",
+									"type": "file",
+									"src": "/C:/Users/brndnwjy/Downloads/mi-ayam-kecap.jpg"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://zany-tan-beetle-kit.cyclic.app/v1/recipe",
+							"protocol": "https",
+							"host": [
+								"zany-tan-beetle-kit",
+								"cyclic",
+								"app"
+							],
+							"path": [
+								"v1",
+								"recipe"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateRecipe",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjkwODhhOGIwLTBiNWEtNGM0Yy1hMDcxLTk4NjU5NmZjNDY2ZCIsIm5hbWUiOiJtaWNoYWVsIiwicm9sZSI6MCwiaWF0IjoxNjYzODMzNjY1fQ.mtkQfTfNindrGiNYwyljiuhdhS8CyTWMIteVw3QfWqU",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "Mi Ayam Kecap",
+									"type": "default"
+								},
+								{
+									"key": "ingredient",
+									"value": "Bebek, Cuka, Garam, Air, Jahe, Bawang Putih, Daun Bawang, Garam, Lada, Kecap Asin, Minyak Wijen, Bihun, Selada",
+									"type": "default",
+									"disabled": true
+								},
+								{
+									"key": "photo",
+									"type": "file",
+									"src": "/C:/Users/brndnwjy/Downloads/bihun-bebek-medan.jpg",
+									"disabled": true
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://zany-tan-beetle-kit.cyclic.app/v1/recipe/129a9b76-98e1-47d8-8a14-545dfb43fa02",
+							"protocol": "https",
+							"host": [
+								"zany-tan-beetle-kit",
+								"cyclic",
+								"app"
+							],
+							"path": [
+								"v1",
+								"recipe",
+								"129a9b76-98e1-47d8-8a14-545dfb43fa02"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteRecipe",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjkwODhhOGIwLTBiNWEtNGM0Yy1hMDcxLTk4NjU5NmZjNDY2ZCIsIm5hbWUiOiJtaWNoYWVsIiwicm9sZSI6MCwiaWF0IjoxNjYzODMzNjY1fQ.mtkQfTfNindrGiNYwyljiuhdhS8CyTWMIteVw3QfWqU",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "https://zany-tan-beetle-kit.cyclic.app/v1/recipe/5c9c6415-1047-42d2-b725-485a9f01b869",
+							"protocol": "https",
+							"host": [
+								"zany-tan-beetle-kit",
+								"cyclic",
+								"app"
+							],
+							"path": [
+								"v1",
+								"recipe",
+								"5c9c6415-1047-42d2-b725-485a9f01b869"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
