@@ -96,9 +96,7 @@ DB_PORT = yourPSQLport
 <!-- REST API -->
 ## REST API
 
-You can view my Postman collection [here]()
-</br>
-[![Run in Postman](https://run.pstmn.io/button.svg)]()
+You can view my Postman collection [here](Mamarecipe.postman_collection.json)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
