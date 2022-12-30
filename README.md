@@ -117,8 +117,6 @@ Contributions are what make the open source community such an amazing place to b
 ## Related Project
 :rocket: [`Mamarecipe (Frontend)`](https://github.com/brndnwjy/mamarecipe-app)
 
-<!-- :rocket: [`Mamarecipe Web Service`](https://dove-chat.herokuapp.com/) -->
-
-<!-- :rocket: [`Mamarecipe App Demo`](https://dove-chat-fe.vercel.app/login) -->
+:rocket: [`Mamarecipe App Demo`](https://mamarecipe-arx.netlify.app)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
